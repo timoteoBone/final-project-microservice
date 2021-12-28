@@ -2,10 +2,9 @@ package repository
 
 import (
 	"context"
-	//proto "github.com/timoteoBone/final-project-microservice/grpc-service/pb"
 	"database/sql"
-	"log"
 
+	"github.com/go-kit/kit/log"
 	entities "github.com/timoteoBone/final-project-microservice/grpc-service/entities"
 )
 
