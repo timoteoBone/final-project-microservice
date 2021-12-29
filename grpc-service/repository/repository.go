@@ -13,8 +13,23 @@ type sqlRepo struct {
 	Logger log.Logger
 }
 
-func (sr *sqlRepo) CreateUser(ctx context.Context, user entities.User) error {
+func NewSQL(db *sql.DB, log log.Logger) *sqlRepo {
+	return &sqlRepo{db, log}
+}
 
+func (repo *sqlRepo) CreateUser(ctx context.Context, user entities.User) error {
+
+	stmt, err := repo.DB.Prepare("INSERT INTO USER VALUES(?,?,?)")
+	if err != nil {
+		return err
+	}
+
+	res, err := stmt.Exec(user.Id, user.Name, user.Age, user.Pass)
+	if err != nil {
+		return err
+	}
+
+	repo.Logger.Log(res, "rows affected")
 	return nil
 }
 
