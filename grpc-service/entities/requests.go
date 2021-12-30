@@ -1,22 +1,29 @@
 package entities
 
 type Status struct {
-	Code    int
+	Code    uint32
 	Message string
 }
 
 type CreateUserRequest struct {
-	User User
+	Name string
+	Id   string
+	Pass string
+	Age  uint32
 }
 
 type CreateUserResponse struct {
-	Status
+	Status Status
+	UserId string
 }
 
 type GetUserRequest struct {
 	UserID string
 }
+
 type GetUserResponse struct {
-	User
-	Status
+	Name string
+	Id   string
+	Pass string
+	Age  uint32
 }

@@ -2,6 +2,7 @@ package endpoints
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/timoteoBone/final-project-microservice/grpc-service/entities"
@@ -33,6 +34,21 @@ func MakeCreateUserEndpoint(s Service) endpoint.Endpoint {
 			return nil, err
 		}
 
+		return c, nil
+
+	}
+}
+
+func MakeGetUserEndpoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
+
+		req := request.(entities.GetUserRequest)
+		c, err := s.GetUser(ctx, req)
+		if err != nil {
+			return nil, err
+		}
+
+		fmt.Println("endpoint")
 		return c, nil
 
 	}

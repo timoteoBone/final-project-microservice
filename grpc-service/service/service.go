@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/go-kit/kit/log"
 
@@ -10,7 +11,7 @@ import (
 )
 
 type Repository interface {
-	GetUser(ctx context.Context, userId string)
+	GetUser(ctx context.Context, userId string) (entities.User, error)
 	CreateUser(ctx context.Context, user entities.User) error
 }
 
@@ -33,14 +34,30 @@ func (s *service) CreateUser(ctx context.Context, userReq entities.CreateUserReq
 
 	if err != nil {
 		response.Status.Message = "Unable to create user"
+		response.Status.Code = 300
 		return response, err
 	}
 
-	response.Status.Message = ("" + user.Name + " created successfully")
-
+	response.Status.Message = (" created successfully")
+	response.Status.Code = 200
+	response.UserId = user.Id
 	return response, nil
 }
 
-func (s *service) GetUser(ctx context.Context, userId string) (entities.User, error) {
-	return entities.User{}, nil
+func (s *service) GetUser(ctx context.Context, user entities.GetUserRequest) (entities.GetUserResponse, error) {
+	s.Logger.Log(s.Logger, "request", "get user", "recevied")
+	fmt.Println("sdsdsd")
+	res, err := s.Repo.GetUser(ctx, user.UserID)
+	if err != nil {
+		return entities.GetUserResponse{}, err
+	}
+
+	response := entities.GetUserResponse{
+		Name: res.Name,
+		Id:   res.Id,
+		Age:  res.Age,
+	}
+
+	return response, nil
+
 }
