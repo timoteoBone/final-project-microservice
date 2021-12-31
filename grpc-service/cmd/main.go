@@ -10,7 +10,7 @@ import (
 
 	"google.golang.org/grpc/reflection"
 
-	"github.com/go-kit/kit/log"
+	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -26,19 +26,6 @@ import (
 
 func main() {
 
-	var logger log.Logger
-	{
-		logger = log.NewLogfmtLogger(os.Stderr)
-		logger = log.NewSyncLogger(logger)
-		logger = log.With(logger,
-			"service", "grpcUserService",
-			"time:", log.DefaultTimestampUTC,
-			"caller", log.DefaultCaller,
-		)
-	}
-	level.Info(logger).Log("msg", "grpcUserService started")
-	defer level.Info(logger).Log("msg", "grpcUserService ended")
-
 	var db *sql.DB
 
 	db, err := sql.Open("mysql", "root:PewDiePie8!!@tcp(127.0.0.1:3306)/test?parseTime=true")
@@ -46,6 +33,8 @@ func main() {
 	if err != nil {
 		fmt.Println("sd")
 	}
+
+	var logger log.Logger
 
 	repo := repository.NewSQL(db, logger)
 	srv := service.NewService(logger, repo)
