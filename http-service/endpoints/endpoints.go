@@ -1,6 +1,8 @@
 package endpoints
 
 import (
+	"context"
+
 	"github.com/go-kit/kit/endpoint"
 )
 
@@ -14,4 +16,22 @@ type Endpoints struct {
 	getUs    endpoint.Endpoint
 }
 
-func MakeEndpoints()
+func MakeEndpoints(s Service) *Endpoints {
+
+	return &Endpoints{
+		createUs: MakeCreateUserEndpoint(s),
+		getUs:    MakeGetUserEndpoint(s),
+	}
+}
+
+func MakeCreateUserEndpoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+
+	}
+}
+
+func MakeGetUserEndpoint(s Service) endpoint.Endpoint {
+	return func(ctx context.Context, request interface{}) (interface{}, error) {
+
+	}
+}
