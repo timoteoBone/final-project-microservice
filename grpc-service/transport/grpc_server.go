@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"errors"
-	"fmt"
 
 	gr "github.com/go-kit/kit/transport/grpc"
 
@@ -48,7 +47,7 @@ func (g *gRPCSv) CreateUser(ctx context.Context, rq *proto.CreateUserRequest) (r
 
 func (g *gRPCSv) GetUser(ctx context.Context, rq *proto.GetUserRequest) (rs *proto.GetUserResponse, err error) {
 	_, resp, err := g.getUs.ServeGRPC(ctx, rq)
-	fmt.Println("ds")
+
 	if err != nil {
 		return nil, err
 	}
@@ -86,7 +85,6 @@ func decodeGetUserRequest(ctx context.Context, request interface{}) (interface{}
 	if !err {
 		return nil, errors.New("Unable to decode request")
 	}
-	fmt.Println("ds")
 
 	return entities.GetUserRequest{
 		UserID: res.User_Id,

@@ -24,6 +24,5 @@ type GetUserRequest struct {
 type GetUserResponse struct {
 	Name string
 	Id   string
-	Pass string
 	Age  uint32
 }

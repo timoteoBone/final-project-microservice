@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-kit/kit/log"
 
@@ -46,7 +45,7 @@ func (s *service) CreateUser(ctx context.Context, userReq entities.CreateUserReq
 
 func (s *service) GetUser(ctx context.Context, user entities.GetUserRequest) (entities.GetUserResponse, error) {
 	s.Logger.Log(s.Logger, "request", "get user", "recevied")
-	fmt.Println("sdsdsd")
+
 	res, err := s.Repo.GetUser(ctx, user.UserID)
 	if err != nil {
 		return entities.GetUserResponse{}, err

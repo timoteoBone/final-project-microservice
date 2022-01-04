@@ -34,7 +34,18 @@ func main() {
 		fmt.Println("sd")
 	}
 
+	defer db.Close()
+
 	var logger log.Logger
+	{
+		logger = log.NewLogfmtLogger(os.Stderr)
+		logger = log.NewSyncLogger(logger)
+		logger = log.With(logger,
+			"service", "grpcUserService",
+			"time:", log.DefaultTimestampUTC,
+			"caller", log.DefaultCaller,
+		)
+	}
 
 	repo := repository.NewSQL(db, logger)
 	srv := service.NewService(logger, repo)
@@ -43,24 +54,26 @@ func main() {
 	grpcSv := tr.NewGrpcServer(end)
 
 	errs := make(chan error)
-
 	go func() {
-		c := make(chan os.Signal, 1)
-		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		c := make(chan os.Signal)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM, syscall.SIGALRM)
 		errs <- fmt.Errorf("%s", <-c)
 	}()
 
 	grpcListener, err := net.Listen("tcp", ":50000")
+
 	if err != nil {
 		level.Error(logger).Log("exit", err)
-		os.Exit(-1)
+		panic(err)
 	}
+
+	defer grpcListener.Close()
 
 	go func() {
 		baseServer := grpc.NewServer()
 		reflection.Register(baseServer)
 		pb.RegisterUserServiceServer(baseServer, grpcSv)
-		level.Info(logger).Log("msg", "Server started successfully")
+		level.Info(logger).Log("msg", "Server started")
 		baseServer.Serve(grpcListener)
 	}()
 

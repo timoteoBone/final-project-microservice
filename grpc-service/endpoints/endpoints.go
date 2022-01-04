@@ -2,7 +2,6 @@ package endpoints
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-kit/kit/endpoint"
 	"github.com/timoteoBone/final-project-microservice/grpc-service/entities"
@@ -21,7 +20,7 @@ type Endpoints struct {
 func MakeEndpoint(s Service) Endpoints {
 	return Endpoints{
 		CreateUser: MakeCreateUserEndpoint(s),
-		GetUser:    MakeCreateUserEndpoint(s),
+		GetUser:    MakeGetUserEndpoint(s),
 	}
 }
 
@@ -47,8 +46,6 @@ func MakeGetUserEndpoint(s Service) endpoint.Endpoint {
 		if err != nil {
 			return nil, err
 		}
-
-		fmt.Println("endpoint")
 		return c, nil
 
 	}

@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/go-kit/kit/log"
+	"github.com/go-kit/kit/log/level"
 	entities "github.com/timoteoBone/final-project-microservice/grpc-service/entities"
 )
 
@@ -31,24 +32,25 @@ func (repo *sqlRepo) CreateUser(ctx context.Context, user entities.User) error {
 	}
 
 	repo.Logger.Log(res, "rows affected")
-	fmt.Println()
+
 	return nil
 }
 
 func (repo *sqlRepo) GetUser(ctx context.Context, userId string) (entities.User, error) {
 
-	stmt, err := repo.DB.Query("SELECT first_name, id, age, pass FROM USER WHERE ID = ?", userId)
+	stmt, err := repo.DB.Query("SELECT first_name, id, age FROM USER WHERE ID = ?", userId)
 	if err != nil {
 		return entities.User{}, err
 	}
 
 	user := entities.User{}
 	for stmt.Next() {
-		err := stmt.Scan(*&user.Name, &user.Id, &user.Age)
+		err := stmt.Scan(&user.Name, &user.Id, &user.Age)
 		if err != nil {
-			//TO DO -- LEARN HOW TO HANDLE THESE KIND OF ERRORS
+			level.Error(repo.Logger).Log("error")
 		}
 	}
+	fmt.Println(user.Age)
 
 	return user, nil
 }
