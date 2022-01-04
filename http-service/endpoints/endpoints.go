@@ -2,36 +2,61 @@ package endpoints
 
 import (
 	"context"
+	"errors"
 
 	"github.com/go-kit/kit/endpoint"
+	"github.com/timoteoBone/final-project-microservice/grpc-service/entities"
 )
 
 type Service interface {
-	CreateUser()
-	GetUser()
+	CreateUser(ctx context.Context, rq entities.CreateUserRequest) (entities.CreateUserResponse, error)
+	GetUser(ctx context.Context, rq entities.GetUserRequest) (entities.GetUserResponse, error)
 }
 
 type Endpoints struct {
-	createUs endpoint.Endpoint
-	getUs    endpoint.Endpoint
+	CreateUs endpoint.Endpoint
+	GetUs    endpoint.Endpoint
 }
 
 func MakeEndpoints(s Service) *Endpoints {
 
 	return &Endpoints{
-		createUs: MakeCreateUserEndpoint(s),
-		getUs:    MakeGetUserEndpoint(s),
+		CreateUs: MakeCreateUserEndpoint(s),
+		GetUs:    MakeGetUserEndpoint(s),
 	}
 }
 
 func MakeCreateUserEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (interface{}, error) {
+	return func(ctx context.Context, rq interface{}) (interface{}, error) {
+		request, valid := rq.(entities.CreateUserRequest)
+
+		if !valid {
+			return nil, errors.New("invalid request type")
+		}
+
+		res, err := s.CreateUser(ctx, request)
+
+		if err != nil {
+			return nil, err
+		}
+
+		return res, nil
 
 	}
 }
 
 func MakeGetUserEndpoint(s Service) endpoint.Endpoint {
-	return func(ctx context.Context, request interface{}) (interface{}, error) {
+	return func(ctx context.Context, rq interface{}) (interface{}, error) {
+		request, valid := rq.(entities.GetUserRequest)
+		if !valid {
+			return nil, errors.New("invalid request type")
+		}
 
+		res, err := s.GetUser(ctx, request)
+		if err != nil {
+			return nil, err
+		}
+
+		return res, nil
 	}
 }
