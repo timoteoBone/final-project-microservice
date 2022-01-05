@@ -33,6 +33,7 @@ func main() {
 	var (
 		httpAddr = flag.String("http.addr", ":8000", "HTTP address")
 	)
+
 	flag.Parse()
 
 	var (
