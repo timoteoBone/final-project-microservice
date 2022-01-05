@@ -51,7 +51,8 @@ func MakeGetUserEndpoint(s Service) endpoint.Endpoint {
 		if !valid {
 			return nil, errors.New("invalid request type")
 		}
-
+        
+		
 		res, err := s.GetUser(ctx, request)
 		if err != nil {
 			return nil, err

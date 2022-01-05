@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/go-kit/log"
 	"github.com/go-kit/log/level"
@@ -21,7 +20,7 @@ func NewgRPClient(log log.Logger, sv *grpc.ClientConn) *grpcClient {
 }
 
 func (repo *grpcClient) CreateUser(ctx context.Context, rq entities.CreateUserRequest) (entities.CreateUserResponse, error) {
-	logger := log.With(repo.logger, "")
+	logger := log.With(repo.logger, "create  user", "recevied")
 
 	client := proto.NewUserServiceClient(repo.server)
 
@@ -40,7 +39,6 @@ func (repo *grpcClient) CreateUser(ctx context.Context, rq entities.CreateUserRe
 
 	status := entities.Status{
 		Message: resp.Status.Message,
-		Code:    resp.Status.Code,
 	}
 
 	res := entities.CreateUserResponse{
@@ -70,8 +68,6 @@ func (repo *grpcClient) GetUser(ctx context.Context, rq entities.GetUserRequest)
 		Id:   protoReq.User_Id,
 		Age:  protoRes.Age,
 	}
-	fmt.Println("from repo")
-	fmt.Println(resp)
 
 	return resp, nil
 }
