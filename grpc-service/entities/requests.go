@@ -1,7 +1,6 @@
 package entities
 
 type Status struct {
-	Code    uint32
 	Message string
 }
 

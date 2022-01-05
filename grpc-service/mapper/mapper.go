@@ -5,8 +5,8 @@ import "github.com/timoteoBone/final-project-microservice/grpc-service/entities"
 func CreateUserRequestToUser(userReq entities.CreateUserRequest) entities.User {
 
 	user := entities.User{
-		userReq.Id,
 		userReq.Name,
+		userReq.Id,
 		userReq.Pass,
 		userReq.Age,
 	}

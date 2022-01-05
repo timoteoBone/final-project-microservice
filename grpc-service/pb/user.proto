@@ -5,7 +5,6 @@ option go_package = "github.com/timoteoBone/final-project-microservice/grpc-serv
 package proto;
 
 message Status{
-    uint32 Code = 1;
     string Message = 2;
 }
 
@@ -42,6 +41,8 @@ service UserService{
     rpc CreateUser(CreateUserRequest) returns (CreateUserResponse){}
     rpc GetUser(GetUserRequest) returns (GetUserResponse){}
 }
+
+
 
 
 

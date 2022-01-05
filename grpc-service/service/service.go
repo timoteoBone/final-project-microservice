@@ -33,12 +33,10 @@ func (s *service) CreateUser(ctx context.Context, userReq entities.CreateUserReq
 
 	if err != nil {
 		response.Status.Message = "Unable to create user"
-		response.Status.Code = 300
 		return response, err
 	}
 
 	response.Status.Message = (" created successfully")
-	response.Status.Code = 200
 	response.UserId = user.Id
 	return response, nil
 }

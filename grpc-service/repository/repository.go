@@ -26,7 +26,7 @@ func (repo *sqlRepo) CreateUser(ctx context.Context, user entities.User) error {
 		return err
 	}
 
-	res, err := stmt.Exec(user.Id, user.Name, user.Age, user.Pass)
+	res, err := stmt.Exec(user.Name, user.Id, user.Age, user.Pass)
 	if err != nil {
 		return err
 	}
