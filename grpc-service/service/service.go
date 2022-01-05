@@ -27,16 +27,18 @@ func (s *service) CreateUser(ctx context.Context, userReq entities.CreateUserReq
 	s.Logger.Log(s.Logger, "request", "create user", "recevied")
 
 	response := entities.CreateUserResponse{}
+	status := entities.Status{}
 
 	user := mapper.CreateUserRequestToUser(userReq)
 	err := s.Repo.CreateUser(ctx, user)
 
 	if err != nil {
-		response.Status.Message = "Unable to create user"
+		status.Message = "Unable to create user"
+		response.Status = status
 		return response, err
 	}
-
-	response.Status.Message = (" created successfully")
+	status.Message = "created successfully"
+	response.Status = status
 	response.UserId = user.Id
 	return response, nil
 }
