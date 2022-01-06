@@ -6,22 +6,21 @@ type Status struct {
 
 type CreateUserRequest struct {
 	Name string
-	Id   string
 	Pass string
 	Age  uint32
 }
 
 type CreateUserResponse struct {
 	Status Status
-	UserId string
+	UserId int64
 }
 
 type GetUserRequest struct {
-	UserID string
+	UserID int64
 }
 
 type GetUserResponse struct {
 	Name string
-	Id   string
+	Id   int64
 	Age  uint32
 }

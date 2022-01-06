@@ -10,8 +10,8 @@ import (
 )
 
 type Repository interface {
-	GetUser(ctx context.Context, userId string) (entities.User, error)
-	CreateUser(ctx context.Context, user entities.User) error
+	GetUser(ctx context.Context, userId int64) (entities.User, error)
+	CreateUser(ctx context.Context, user entities.User) (int64, error)
 }
 
 type service struct {
@@ -30,7 +30,7 @@ func (s *service) CreateUser(ctx context.Context, userReq entities.CreateUserReq
 	status := entities.Status{}
 
 	user := mapper.CreateUserRequestToUser(userReq)
-	err := s.Repo.CreateUser(ctx, user)
+	genId, err := s.Repo.CreateUser(ctx, user)
 
 	if err != nil {
 		status.Message = "Unable to create user"
@@ -39,7 +39,7 @@ func (s *service) CreateUser(ctx context.Context, userReq entities.CreateUserReq
 	}
 	status.Message = "created successfully"
 	response.Status = status
-	response.UserId = user.Id
+	response.UserId = genId
 	return response, nil
 }
 
@@ -53,10 +53,9 @@ func (s *service) GetUser(ctx context.Context, user entities.GetUserRequest) (en
 
 	response := entities.GetUserResponse{
 		Name: res.Name,
-		Id:   res.Id,
+		Id:   user.UserID,
 		Age:  res.Age,
 	}
 
 	return response, nil
-
 }

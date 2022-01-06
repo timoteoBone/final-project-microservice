@@ -64,7 +64,6 @@ func decodeCreateUserRequest(ctx context.Context, request interface{}) (interfac
 
 	return entities.CreateUserRequest{
 		Name: res.Name,
-		Id:   res.Id,
 		Age:  res.Age,
 		Pass: res.Pass,
 	}, nil

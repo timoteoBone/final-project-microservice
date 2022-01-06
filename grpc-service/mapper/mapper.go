@@ -6,7 +6,6 @@ func CreateUserRequestToUser(userReq entities.CreateUserRequest) entities.User {
 
 	user := entities.User{
 		userReq.Name,
-		userReq.Id,
 		userReq.Pass,
 		userReq.Age,
 	}
